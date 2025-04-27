@@ -35,40 +35,41 @@ async function steamLogin(user, pass) {
     await page.click(".DjSvCZoKKfoNSmarsEcTS");
     console.log(chalk.yellow(`🚪 Clicked Login. Waiting for PIN input...`));
 
-    // Now return the browser and page, waiting for PIN externally
-    return { browser, page };
+    return page;
 }
 
 async function submitPin(page, pin) {
-    await page.waitForSelector("._3xcXqLVteTNHmk-gh9W65d", { timeout: 60000 }); // Wait up to 60s
+    await page.waitForSelector("._3xcXqLVteTNHmk-gh9W65d", { timeout: 60000 });
     const inputs2 = await page.$$("._3xcXqLVteTNHmk-gh9W65d");
     try {
         if (inputs2.length > 0) {
             await inputs2[0].type(pin);
             console.log(chalk.green(`✅ Successfully input PIN`));
+
+            await sleep(10000);
+            try {
+                await page.waitForSelector("._1jW5_Ycv6jGKu28A1OSIQK", { timeout: 3000 });
+                console.log(chalk.green(`✅ Successfully access account`));
+                return 0
+            } catch (error) {
+                if (error.name === 'TimeoutError') {
+                    console.log(chalk.red(`❌ Wrong PIN`));
+                    await sleep(2000);
+                    for (let i = 0; i < 5; i++) {
+                        await inputs2[i].press('Backspace');
+                    };
+                    return 1
+                } else {
+                    console.error("An unexpected error occurred:", error);
+                }
+            }
         } else {
             console.log(chalk.red(`❌ PIN input field not found`));
         }
     } catch (err) {
         console.log(chalk.red(`❌ Error while waiting for PIN input field: ${err.message}`));
     }
-
-    await sleep(5000);
-    for (let i = 0; i < 5; i++) {
-        await inputs2[i].press('Backspace');
-    };
-
-    await sleep(5000);
-    try {
-        if (inputs2.length > 0) {
-            await inputs2[0].type(pin);
-            console.log(chalk.green(`✅ Successfully input PIN`));
-        } else {
-            console.log(chalk.red(`❌ PIN input field not found`));
-        }
-    } catch (err) {
-        console.log(chalk.red(`❌ Error while waiting for PIN input field: ${err.message}`));
-    }
+    return 0
 }
 
 module.exports = { steamLogin, submitPin };

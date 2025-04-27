@@ -8,7 +8,6 @@ const steamLogin = require("./login.js");
 
 const accounts = [
     { username: "sugomadics2", password: "Heyakid157" },
-    // Add more accounts here
 ];
 
 const userAgents = [
@@ -85,7 +84,7 @@ async function checkAccount(user, passw) {
         if (rsaResp.status === 429) {
             console.log(chalk.red(`🚫 Rate limited on getrsakey for [${user}] — Waiting 60s...`));
             await sleep(60000);
-            return await checkAccount(user, passw); // Retry
+            return await checkAccount(user, passw);
         }
 
         const rsaData = await rsaResp.json();
@@ -139,7 +138,7 @@ async function checkAccount(user, passw) {
         if (loginResp.status === 429) {
             console.log(chalk.red(`🚫 Rate limited on [${user}] — Waiting 60s`));
             await sleep(60000);
-            return await checkAccount(user, passw); // Retry
+            return await checkAccount(user, passw);
         }
 
         const loginData = await loginResp.json();
@@ -151,11 +150,14 @@ async function checkAccount(user, passw) {
             console.log(chalk.yellow(`⚠️ 2FA Enabled — NEED VERIFY [${user}]`));
             fs.appendFileSync(path.join(resultDir, "2fa.txt"), `${user}:${passw}\n`);
 
-            // 🚀 HERE: Call steamLogin
             await (async () => {
-                const { browser, page } = await steamLogin.steamLogin(user, passw);
-                const pin = await waitForPin(user);
-                await steamLogin.submitPin(page, pin);
+                const page = await steamLogin.steamLogin(user, passw);
+                var pin = await waitForPin(user);
+                const login = await steamLogin.submitPin(page, pin);
+                while (login == 1) {
+                    pin = await waitForPin(user);
+                    login = await steamLogin.submitPin(page, pin);
+                }
                 console.log(chalk.green(`🎯 Finished 2FA for [${user}]`));
             })();
             
@@ -172,7 +174,7 @@ async function checkAccount(user, passw) {
 async function startChecking() {
     for (const account of accounts) {
         await checkAccount(account.username, account.password);
-        const delay = Math.floor(Math.random() * 5000) + 8000; // 8s - 13s random
+        const delay = Math.floor(Math.random() * 5000) + 8000;
         console.log(chalk.blue(`⏳ Waiting ${delay / 1000}s`));
         await sleep(delay);
     }
