@@ -4,6 +4,7 @@ const app = express();
 const checkerRoute = require("./routes/checker.js");
 const path = require("path");
 const fs = require("fs");
+const { resett, receivePinFromApi } = require('./modules/checker.js');
 
 const port = 5000;
 
@@ -14,6 +15,18 @@ app.use(express.json());
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
+});
+
+app.use('/', checkerRoute);
+
+app.post("/api/pin", (req, res) => {
+    const { username, pin } = req.body;
+    if (!username || !pin) {
+        return res.status(400).json({ error: 'Mohon berikan username dan PIN.' });
+    }
+    receivePinFromApi(username, pin);
+    console.log(`PIN diterima dari website untuk ${username}: ${pin}`);
+    res.status(200).json({ success: true, message: `PIN diterima untuk ${username}.` });
 });
 
 // Gunakan route checker

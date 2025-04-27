@@ -46,10 +46,6 @@ async function steamLogin(user, pass) {
     console.error(
       chalk.red(`❌ Error during login process for [${user}]: ${error.message}`)
     );
-    if (browser) {
-      await browser.close();
-    }
-    return { browser: null, page: null };
   }
 }
 
