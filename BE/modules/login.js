@@ -61,14 +61,13 @@ async function submitPin(page, pin) {
       return;
     }
 
-    await sleep(1000); // Tunggu sebentar setelah input PIN
-    await page.click('button[type="submit"]'); // Asumsi ada tombol submit setelah input PIN
+    await sleep(1000);
+    await page.click('button[type="submit"]');
     console.log(chalk.yellow(`🔑 Submitting PIN...`));
-    await page.waitForNavigation({ timeout: 60000 }); // Tunggu navigasi setelah submit
+    await page.waitForNavigation({ timeout: 60000 });
   } catch (err) {
     console.log(chalk.red(`❌ Error during PIN submission: ${err.message}`));
   } finally {
-    // Tidak menutup browser di sini, karena dikelola di checker.js
   }
 }
 

